@@ -1,10 +1,10 @@
 import { MdDeleteForever } from "react-icons/md";
 import { BiSolidEdit } from "react-icons/bi";
 import PropTypes from "prop-types";
-
+import Card from "./Card";
 const PlanItem = ({ plan, deletePlan }) => {
   return (
-    <div className="card">
+    <Card>
       <div className="num-display">{plan.id}</div>
       <button className="delete" onClick={() => deletePlan(plan.id)}>
         <MdDeleteForever />
@@ -29,7 +29,7 @@ const PlanItem = ({ plan, deletePlan }) => {
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 };
 

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
-
-const Header = ({ text, bgColor, textColor }) => {
+import Container from "./Container";
+import { FcHome } from "react-icons/fc";
+const Header = ({ text, bgColor, textColor, getAllPlans }) => {
   const HeaderStyle = {
     backgroundColor: bgColor,
     color: textColor,
@@ -8,9 +9,12 @@ const Header = ({ text, bgColor, textColor }) => {
 
   return (
     <header style={HeaderStyle}>
-      <div className="container">
+      <Container>
+        <button className="all-plans" onClick={getAllPlans}>
+          <FcHome />
+        </button>
         <h1>{text}</h1>
-      </div>
+      </Container>
     </header>
   );
 };
@@ -25,6 +29,7 @@ Header.propTypes = {
   text: PropTypes.string,
   bgColor: PropTypes.string,
   textColor: PropTypes.string,
+  getAllPlans: PropTypes.func.isRequired,
 };
 
 export default Header;

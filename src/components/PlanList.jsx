@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 const PlanList = ({ plans, deletePlan }) => {
   if (!plans) return <p> No plans </p>;
   return (
-    <div className="plan-list">
+    <>
       {plans.map((plan) => (
         <PlanItem key={plan.id} plan={plan} deletePlan={deletePlan} />
       ))}
-    </div>
+    </>
   );
 };
 

@@ -12,8 +12,9 @@ body {
 
   line-height: 1.6;
 }
-
 .container {
+  display: flex;
+  flex-direction: column;
   max-width: 768px;
   margin: auto;
   padding: 0 20px;
@@ -34,7 +35,23 @@ header {
   align-items: center;
   margin-bottom: 30px;
 }
-
+.all-plans {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+.all-plans svg {
+  font-size: 24px;
+}
+.error {
+  color: #ff4d4d;
+  font-size: 15px;
+  margin: 10px 10px;
+  /* display: none; */
+}
 ul {
   list-style: none;
 }
@@ -148,26 +165,8 @@ input:focus {
   opacity: 0.9;
 }
 
-/* .message {
-  padding-top: 10px;
-  text-align: center;
-  color: rebeccapurple;
-} */
-
-/* @media (max-width: 600px) {
-  .rating li {
-    margin: 10px 3px;
-  }
-
-  .rating {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 30px 0 40px;
-  }
-
+@media (max-width: 600px) {
   .input-group input {
     width: 80%;
   }
-} */
+}

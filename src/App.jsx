@@ -1,16 +1,19 @@
 import Header from "./components/Header";
 import PlanList from "./components/PlanList";
 import PlanForm from "./components/PlanForm";
+import SearchPlan from "./components/SearchPlan";
+import Container from "./components/Container";
 import { useEffect, useState } from "react";
 
 const App = () => {
   const [Plans, setPlanList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [AllPlans, setAllPlans] = useState([]); // keeps all plans for search
 
   useEffect(() => {
-    fetchPlans();
+    getAllPlans();
   }, []);
-  const fetchPlans = async () => {
+  const getAllPlans = async () => {
     try {
       const response = await fetch(
         "https://plan-service.onrender.com/api/plans"
@@ -20,6 +23,7 @@ const App = () => {
       }
       const responseData = await response.json();
       setPlanList(responseData);
+      setAllPlans(responseData);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -27,13 +31,12 @@ const App = () => {
   };
   if (loading)
     return (
-      <div className="container">
+      <Container>
         <div className="loading">Loading...</div>
-      </div>
+      </Container>
     );
   const deletePlan = async (id) => {
     if (window.confirm("Are you sure you want to delete this plan?")) {
-      console.log("Delete plan with id: ", id);
       try {
         const response = await fetch(
           `https://plan-service.onrender.com/api/plans/${id}`,
@@ -51,15 +54,68 @@ const App = () => {
       }
     }
   };
+
+  const SearchById = async (id) => {
+    try {
+      const response = await fetch(
+        `https://plan-service.onrender.com/api/plans/${id}`
+      );
+      if (!response.ok) {
+        throw new Error("Error fetching plan");
+      }
+      const responseData = await response.json();
+      setPlanList(responseData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createPlan = async (plan) => {
+    const maxId = AllPlans.reduce(
+      (max, plan) => (plan.id > max ? plan.id : max),
+      0
+    );
+    plan.id = maxId + 1;
+
+    try {
+      const formData = new URLSearchParams();
+      for (const key in plan) {
+        formData.append(key, plan[key]);
+      }
+
+      const response = await fetch(
+        "https://plan-service.onrender.com/api/plans",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: formData.toString(),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error creating plan");
+      }
+
+      const responseData = await response.json();
+      setPlanList((prevPlans) => [...prevPlans, responseData]);
+      setAllPlans((prevPlans) => [...prevPlans, responseData]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
-      <Header />
-      <div className="container">
-        <PlanForm />
-        <div className="plans">
+      <Header getAllPlans={getAllPlans} />
+      <Container>
+        <PlanForm createPlan={createPlan} />
+        <SearchPlan SearchById={SearchById} plans={AllPlans} />
+        <Container>
           <PlanList plans={Plans} deletePlan={deletePlan} />
-        </div>
-      </div>
+        </Container>
+      </Container>
     </>
   );
 };
