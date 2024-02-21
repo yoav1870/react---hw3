@@ -12,10 +12,11 @@ body {
 
   line-height: 1.6;
 }
+
 .container {
   display: flex;
   flex-direction: column;
-  max-width: 768px;
+  max-width: 1000px;
   margin: auto;
   padding: 0 20px;
 }
@@ -50,7 +51,6 @@ header {
   color: #ff4d4d;
   font-size: 15px;
   margin: 10px 10px;
-  /* display: none; */
 }
 ul {
   list-style: none;
@@ -116,7 +116,11 @@ ul {
 }
 
 .edit {
-  right: 40px;
+  right: 45px;
+}
+.edit,
+.delete svg {
+  font-size: 20px;
 }
 /* card  */
 
