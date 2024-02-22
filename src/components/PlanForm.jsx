@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Card from "./Card";
 
 const PlanForm = ({ createPlan }) => {
-  const [name, setName] = useState("");
+  const [planName, setName] = useState("");
   const [description, setDescription] = useState("");
   const [locationName, setLocationName] = useState("");
   const [locationDescription, setLocationDescription] = useState("");
@@ -15,8 +15,8 @@ const PlanForm = ({ createPlan }) => {
     const locationId = 101;
     e.preventDefault();
     createPlan({
-      name,
       id,
+      planName,
       description,
       locationId,
       locationName,
@@ -38,12 +38,12 @@ const PlanForm = ({ createPlan }) => {
       <form onSubmit={handleSubmit}>
         <h2>Tell me what plan you want to add</h2>
         <div className="input-group">
-          <label htmlFor="name">Name of plan: </label>
+          <label htmlFor="planName">Name of plan: </label>
           <input
             type="text"
-            id="name"
+            id="planName"
             placeholder=" Name of the plan"
-            value={name}
+            value={planName}
             onChange={(e) => setName(e.target.value)}
           />
         </div>

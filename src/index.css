@@ -36,6 +36,11 @@ header {
   align-items: center;
   margin-bottom: 30px;
 }
+.Alert {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .all-plans {
   position: absolute;
   top: 20px;
