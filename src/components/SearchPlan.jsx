@@ -58,7 +58,6 @@ const SearchPlan = ({ SearchById }) => {
 
 SearchPlan.propTypes = {
   SearchById: PropTypes.func.isRequired,
-  plans: PropTypes.array.isRequired,
 };
 
 export default SearchPlan;
