@@ -9,114 +9,148 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-
-const PlanItem = ({ plan, deletePlan }) => {
+const PlanItem = ({ plan, deletePlan, updatePlan }) => {
   const [open, setOpen] = useState(false);
-
-  const updatePlan = () => {
+  const [planName, setName] = useState(plan.planName);
+  const [locationName, setLocationName] = useState(plan.locations[0].name);
+  const [locationDescription, setLocationDescription] = useState(
+    plan.locations[0].description
+  );
+  const [maxCapacity, setMaxCapacity] = useState(plan.locations[0].maxCapacity);
+  const [safetyInstructions, setSafetyInstructions] = useState(
+    plan.locations[0].safetyInstructions
+  );
+  const [OtherThings, setOtherThings] = useState(plan.locations[0].OtherThings);
+  const openUpdate = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    setName(plan.planName);
+    setLocationName(plan.locations[0].name);
+    setLocationDescription(plan.locations[0].description);
+    setMaxCapacity(plan.locations[0].maxCapacity);
+    setSafetyInstructions(plan.locations[0].safetyInstructions);
+    setOtherThings(plan.locations[0].OtherThings);
   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const id = plan.id;
+    const locationId = plan.locations[0].id;
+    updatePlan({
+      id,
+      planName,
+      locationId,
+      locationName,
+      locationDescription,
+      maxCapacity,
+      safetyInstructions,
+      OtherThings,
+    });
+
+    handleClose();
+  };
+
   return (
     <Card>
       <div className="num-display">{plan.id}</div>
       <button className="delete" onClick={() => deletePlan(plan.id)}>
         <MdDeleteForever />
       </button>
-      <button className="edit" onClick={() => updatePlan()}>
+      <button className="edit" onClick={() => openUpdate()}>
         <BiSolidEdit />
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            component: "form",
-            onSubmit: (event) => {
-              event.preventDefault();
-              const formData = new FormData(event.currentTarget);
-              const formJson = Object.fromEntries(formData.entries());
-              const email = formJson.email;
-              console.log(email);
-              handleClose();
-            },
-          }}
-        >
-          <DialogTitle>Update plan number {plan.id}</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              label="Plan name"
-              margin="dense"
-              id="namePlan"
-              name="namePlan"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={plan.planName}
-            />
-            <TextField
-              autoFocus
-              label="Location name"
-              margin="dense"
-              id="nameLocation"
-              name="nameLocation"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={plan.locations[0].name}
-            />
-            <TextField
-              autoFocus
-              label="Location description"
-              margin="dense"
-              id="description"
-              name="description"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={plan.locations[0].description}
-            />
-            <TextField
-              autoFocus
-              label="Max capacity"
-              margin="dense"
-              id="maxCapacity"
-              name="maxCapacity"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={plan.locations[0].maxCapacity}
-            />
-            <TextField
-              autoFocus
-              label="Safety instructions"
-              margin="dense"
-              id="safetyInstructions"
-              name="safetyInstructions"
-              multiline
-              fullWidth
-              variant="standard"
-              value={plan.locations[0].safetyInstructions}
-            />
-            <TextField
-              autoFocus
-              label="Other things"
-              margin="dense"
-              id="otherThings"
-              name="otherThings"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={plan.locations[0].OtherThings}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Update</Button>
-          </DialogActions>
-        </Dialog>
       </button>
+      <Dialog open={open}>
+        <DialogTitle>Update plan number {plan.id}</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            label="Plan name"
+            margin="dense"
+            id="namePlan"
+            name="namePlan"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={planName}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <TextField
+            autoFocus
+            label="Location name"
+            margin="dense"
+            id="nameLocation"
+            name="nameLocation"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={locationName}
+            onChange={(e) => setLocationName(e.target.value)}
+          />
+          <TextField
+            autoFocus
+            label="Location description"
+            margin="dense"
+            id="description"
+            name="description"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={locationDescription}
+            onChange={(e) => setLocationDescription(e.target.value)}
+          />
+          <TextField
+            autoFocus
+            label="Max capacity"
+            margin="dense"
+            id="maxCapacity"
+            name="maxCapacity"
+            type="text"
+            inputMode="numeric" // Ensure only numeric input is allowed
+            fullWidth
+            variant="standard"
+            value={maxCapacity}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d*$/.test(value)) {
+                // Check if the value contains only digits
+                setMaxCapacity(value);
+              }
+            }}
+          />
+          <TextField
+            autoFocus
+            label="Safety instructions"
+            margin="dense"
+            id="safetyInstructions"
+            name="safetyInstructions"
+            multiline
+            fullWidth
+            variant="standard"
+            value={safetyInstructions}
+            onChange={(e) => setSafetyInstructions(e.target.value)}
+          />
+          <TextField
+            autoFocus
+            label="Other things"
+            margin="dense"
+            id="otherThings"
+            name="otherThings"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={OtherThings}
+            onChange={(e) => setOtherThings(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button type="submit" onClick={handleSubmit}>
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <h3>{plan.planName}</h3>
       <div className="locations">
         {plan.locations.map((location) => (
@@ -154,6 +188,7 @@ PlanItem.propTypes = {
     ).isRequired,
   }).isRequired,
   deletePlan: PropTypes.func.isRequired,
+  updatePlan: PropTypes.func.isRequired,
 };
 
 export default PlanItem;

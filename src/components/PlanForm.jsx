@@ -9,11 +9,12 @@ const PlanForm = ({ createPlan }) => {
   const [locationDescription, setLocationDescription] = useState("");
   const [maxCapacity, setMaxCapacity] = useState("");
   const [safetyInstructions, setSafetyInstructions] = useState("");
-  const [otherThings, setOtherThings] = useState("");
+  const [OtherThings, setOtherThings] = useState("");
   const handleSubmit = (e) => {
     const id = 0;
     const locationId = 101;
     e.preventDefault();
+    console.log(OtherThings);
     createPlan({
       id,
       planName,
@@ -23,7 +24,7 @@ const PlanForm = ({ createPlan }) => {
       locationDescription,
       maxCapacity,
       safetyInstructions,
-      otherThings,
+      OtherThings,
     });
     setName("");
     setDescription("");
@@ -40,6 +41,7 @@ const PlanForm = ({ createPlan }) => {
         <div className="input-group">
           <label htmlFor="planName">Name of plan: </label>
           <input
+            required
             type="text"
             id="planName"
             placeholder=" Name of the plan"
@@ -50,6 +52,7 @@ const PlanForm = ({ createPlan }) => {
         <div className="input-group">
           <label htmlFor="description">Description:</label>
           <input
+            required
             type="text"
             id="description"
             placeholder=" Plan description"
@@ -60,6 +63,7 @@ const PlanForm = ({ createPlan }) => {
         <div className="input-group">
           <label htmlFor="location-name">Location name:</label>
           <input
+            required
             type="text"
             id="location-name"
             placeholder=" location name"
@@ -70,6 +74,7 @@ const PlanForm = ({ createPlan }) => {
         <div className="input-group">
           <label htmlFor="locationDescription">Location description:</label>
           <input
+            required
             type="text"
             id="locationDescription"
             placeholder=" Location description"
@@ -80,16 +85,25 @@ const PlanForm = ({ createPlan }) => {
         <div className="input-group">
           <label htmlFor="maxCapacity">Max Capacity:</label>
           <input
-            type="number"
+            required
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
             id="maxCapacity"
             placeholder=" Max capacity"
             value={maxCapacity}
-            onChange={(e) => setMaxCapacity(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d*$/.test(value)) {
+                setMaxCapacity(value);
+              }
+            }}
           />
         </div>
         <div className="input-group">
           <label htmlFor="safetyInstructions">Safety Instructions:</label>
           <input
+            required
             type="text"
             id="safetyInstructions"
             placeholder="Safety instructions"
@@ -98,12 +112,12 @@ const PlanForm = ({ createPlan }) => {
           />
         </div>
         <div className="input-group">
-          <label htmlFor="otherThings">Other Things:</label>
+          <label htmlFor="OtherThings">Other Things:</label>
           <input
             type="text"
-            id="otherThings"
+            id="OtherThings"
             placeholder=" Other things"
-            value={otherThings}
+            value={OtherThings}
             onChange={(e) => setOtherThings(e.target.value)}
           />
         </div>

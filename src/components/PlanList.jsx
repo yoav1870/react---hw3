@@ -1,12 +1,17 @@
 import PlanItem from "./PlanItem";
 import PropTypes from "prop-types";
 
-const PlanList = ({ plans, deletePlan }) => {
+const PlanList = ({ plans, deletePlan, updatePlan }) => {
   if (!plans) return <p> No plans </p>;
   return (
     <>
       {plans.map((plan) => (
-        <PlanItem key={plan.id} plan={plan} deletePlan={deletePlan} />
+        <PlanItem
+          key={plan.id}
+          plan={plan}
+          deletePlan={deletePlan}
+          updatePlan={updatePlan}
+        />
       ))}
     </>
   );
@@ -30,6 +35,7 @@ PlanList.propTypes = {
     })
   ),
   deletePlan: PropTypes.func.isRequired,
+  updatePlan: PropTypes.func.isRequired,
 };
 
 export default PlanList;

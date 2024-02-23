@@ -105,7 +105,7 @@ const App = () => {
             description: planData.locationDescription,
             maxCapacity: planData.maxCapacity,
             safetyInstructions: planData.safetyInstructions,
-            otherThings: planData.otherThings,
+            OtherThings: planData.OtherThings,
           },
         ],
       };
@@ -129,8 +129,8 @@ const App = () => {
         plan.locations[0].safetyInstructions
       );
       formData.append(
-        "locations[0][otherThings]",
-        plan.locations[0].otherThings
+        "locations[0][OtherThings]",
+        plan.locations[0].OtherThings
       );
 
       console.log(formData.toString());
@@ -146,17 +146,81 @@ const App = () => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Error creating plan");
-      }
-
       const responseData = await response.json();
       if (responseData === "created") {
         setPlanList((prevPlans) => {
+          handleSuccess("Plan created successfully");
           return [...prevPlans, plan];
         });
       }
+      if (response.status !== 200) {
+        throw new Error(responseData);
+      }
     } catch (error) {
+      handleError(error.message);
+      console.error(error);
+    }
+  };
+  const updatePlan = async (planData) => {
+    try {
+      const plan = {
+        id: planData.id,
+        planName: planData.planName,
+        description: planData.description,
+        locations: [
+          {
+            id: planData.locationId,
+            name: planData.locationName,
+            description: planData.locationDescription,
+            maxCapacity: planData.maxCapacity,
+            safetyInstructions: planData.safetyInstructions,
+            OtherThings: planData.OtherThings,
+          },
+        ],
+      };
+
+      const formData = new URLSearchParams();
+      formData.append("id", plan.id);
+      formData.append("planName", plan.planName);
+      formData.append("description", plan.description);
+      formData.append("locations[0][id]", plan.locations[0].id);
+      formData.append("locations[0][name]", plan.locations[0].name);
+      formData.append(
+        "locations[0][description]",
+        plan.locations[0].description
+      );
+      formData.append(
+        "locations[0][maxCapacity]",
+        plan.locations[0].maxCapacity
+      );
+      formData.append(
+        "locations[0][safetyInstructions]",
+        plan.locations[0].safetyInstructions
+      );
+      formData.append(
+        "locations[0][OtherThings]",
+        plan.locations[0].OtherThings
+      );
+
+      const response = await fetch(
+        `https://plan-service.onrender.com/api/plans/${plan.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: formData,
+        }
+      );
+      const responseData = await response.json();
+      if (response.status !== 200) {
+        throw new Error(responseData);
+      }
+      const updatedPlans = Plans.map((p) => (p.id === plan.id ? plan : p));
+      setPlanList(updatedPlans);
+      handleSuccess(responseData);
+    } catch (error) {
+      handleError(error.message);
       console.error(error);
     }
   };
@@ -178,7 +242,11 @@ const App = () => {
         <PlanForm createPlan={createPlan} />
         <SearchPlan SearchById={SearchById} />
         <Container>
-          <PlanList plans={Plans} deletePlan={deletePlan} />
+          <PlanList
+            plans={Plans}
+            deletePlan={deletePlan}
+            updatePlan={updatePlan}
+          />
         </Container>
       </Container>
     </>
