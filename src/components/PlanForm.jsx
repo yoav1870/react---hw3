@@ -10,10 +10,13 @@ const PlanForm = ({ createPlan }) => {
   const [maxCapacity, setMaxCapacity] = useState("");
   const [safetyInstructions, setSafetyInstructions] = useState("");
   const [OtherThings, setOtherThings] = useState("");
+  // const [borderColor, setBorderColor] = useState("blue");
+
   const handleSubmit = (e) => {
     const id = 0;
     const locationId = 101;
     e.preventDefault();
+
     console.log(OtherThings);
     createPlan({
       id,
@@ -34,12 +37,25 @@ const PlanForm = ({ createPlan }) => {
     setSafetyInstructions("");
     setOtherThings("");
   };
+
+  const setColorChange = (e) => {
+    const inputGroups = document.querySelectorAll(".input-group");
+    inputGroups.forEach((group) => {
+      group.style.borderBottom = "1px solid #ccc";
+    });
+
+    const inputGroup = e.currentTarget.closest(".input-group");
+    if (inputGroup) {
+      inputGroup.style.borderBottom = "2px solid blue";
+    }
+  };
+
   return (
     <Card>
       <form onSubmit={handleSubmit}>
         <h2>Tell me what plan you want to add</h2>
-        <div className="input-group">
-          <label htmlFor="planName">Name of plan: </label>
+        <label htmlFor="planName">Name of plan:* </label>
+        <div className="input-group" onClick={setColorChange}>
           <input
             required
             type="text"
@@ -49,8 +65,8 @@ const PlanForm = ({ createPlan }) => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="input-group">
-          <label htmlFor="description">Description:</label>
+        <label htmlFor="description">Description:*</label>
+        <div className="input-group" onClick={setColorChange}>
           <input
             required
             type="text"
@@ -60,8 +76,8 @@ const PlanForm = ({ createPlan }) => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <div className="input-group">
-          <label htmlFor="location-name">Location name:</label>
+        <label htmlFor="location-name">Location name:*</label>
+        <div className="input-group" onClick={setColorChange}>
           <input
             required
             type="text"
@@ -71,8 +87,8 @@ const PlanForm = ({ createPlan }) => {
             onChange={(e) => setLocationName(e.target.value)}
           />
         </div>
-        <div className="input-group">
-          <label htmlFor="locationDescription">Location description:</label>
+        <label htmlFor="locationDescription">Location description:*</label>
+        <div className="input-group" onClick={setColorChange}>
           <input
             required
             type="text"
@@ -82,8 +98,8 @@ const PlanForm = ({ createPlan }) => {
             onChange={(e) => setLocationDescription(e.target.value)}
           />
         </div>
-        <div className="input-group">
-          <label htmlFor="maxCapacity">Max Capacity:</label>
+        <label htmlFor="maxCapacity">Max Capacity:*</label>
+        <div className="input-group" onClick={setColorChange}>
           <input
             required
             type="text"
@@ -100,19 +116,21 @@ const PlanForm = ({ createPlan }) => {
             }}
           />
         </div>
-        <div className="input-group">
-          <label htmlFor="safetyInstructions">Safety Instructions:</label>
+        <label htmlFor="safetyInstructions">Safety Instructions * :</label>
+
+        <div className="input-group" onClick={setColorChange}>
           <input
             required
             type="text"
             id="safetyInstructions"
-            placeholder="Safety instructions"
+            placeholder=" Safety instructions"
             value={safetyInstructions}
             onChange={(e) => setSafetyInstructions(e.target.value)}
           />
         </div>
-        <div className="input-group">
-          <label htmlFor="OtherThings">Other Things:</label>
+        <label htmlFor="OtherThings">Other Things:</label>
+
+        <div className="input-group" onClick={setColorChange}>
           <input
             type="text"
             id="OtherThings"

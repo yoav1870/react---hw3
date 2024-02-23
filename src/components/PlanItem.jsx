@@ -21,20 +21,33 @@ const PlanItem = ({ plan, deletePlan, updatePlan }) => {
     plan.locations[0].safetyInstructions
   );
   const [OtherThings, setOtherThings] = useState(plan.locations[0].OtherThings);
+  const [error, setError] = useState(false);
   const openUpdate = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
     setName(plan.planName);
     setLocationName(plan.locations[0].name);
     setLocationDescription(plan.locations[0].description);
     setMaxCapacity(plan.locations[0].maxCapacity);
     setSafetyInstructions(plan.locations[0].safetyInstructions);
     setOtherThings(plan.locations[0].OtherThings);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (
+      !planName ||
+      !locationName ||
+      !locationDescription ||
+      !maxCapacity ||
+      !safetyInstructions
+    ) {
+      setError(true);
+      return;
+    } else setError(false);
+
     const id = plan.id;
     const locationId = plan.locations[0].id;
     updatePlan({
@@ -64,6 +77,7 @@ const PlanItem = ({ plan, deletePlan, updatePlan }) => {
         <DialogTitle>Update plan number {plan.id}</DialogTitle>
         <DialogContent>
           <TextField
+            required
             autoFocus
             label="Plan name"
             margin="dense"
@@ -76,6 +90,7 @@ const PlanItem = ({ plan, deletePlan, updatePlan }) => {
             onChange={(e) => setName(e.target.value)}
           />
           <TextField
+            required
             autoFocus
             label="Location name"
             margin="dense"
@@ -100,6 +115,7 @@ const PlanItem = ({ plan, deletePlan, updatePlan }) => {
             onChange={(e) => setLocationDescription(e.target.value)}
           />
           <TextField
+            required
             autoFocus
             label="Max capacity"
             margin="dense"
@@ -119,6 +135,7 @@ const PlanItem = ({ plan, deletePlan, updatePlan }) => {
             }}
           />
           <TextField
+            required
             autoFocus
             label="Safety instructions"
             margin="dense"
@@ -143,6 +160,12 @@ const PlanItem = ({ plan, deletePlan, updatePlan }) => {
             onChange={(e) => setOtherThings(e.target.value)}
           />
         </DialogContent>
+        {error && (
+          <div className="error-update">
+            Please fill in all fields that are required and try again.
+          </div>
+        )}
+
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button type="submit" onClick={handleSubmit}>
@@ -159,11 +182,11 @@ const PlanItem = ({ plan, deletePlan, updatePlan }) => {
             <ul>
               <li>Location name : {location.name}</li>
               <li>Location description: {location.description}</li>
-              <li>Location maxCapacity : {location.maxCapacity}</li>
+              <li>Location max capacity : {location.maxCapacity}</li>
               <li>
-                location safetyInstructions :{location.safetyInstructions}
+                location safety instructions: {location.safetyInstructions}
               </li>
-              <li>OtherThings: {location.OtherThings}</li>
+              <li>Other things: {location.OtherThings}</li>
             </ul>
           </div>
         ))}

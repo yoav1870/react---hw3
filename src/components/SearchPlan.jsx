@@ -23,13 +23,22 @@ const SearchPlan = ({ SearchById }) => {
       setSearch("");
     }
   };
+  const setColorChange = (e) => {
+    const inputGroups = document.querySelectorAll(".input-group");
+    inputGroups.forEach((group) => {
+      group.style.borderBottom = "1px solid #ccc";
+    });
 
+    const inputGroup = e.currentTarget.closest(".input-group");
+    if (inputGroup) {
+      inputGroup.style.borderBottom = "2px solid blue";
+    }
+  };
   return (
     <Card>
       <form onSubmit={handleSubmit}>
         <h2>Search for a plan by id</h2>
-        <div className="input-group">
-          <label htmlFor="search">Search:</label>
+        <div className="input-group" onClick={setColorChange}>
           <input
             type="number"
             id="search"

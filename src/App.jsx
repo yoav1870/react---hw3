@@ -133,8 +133,6 @@ const App = () => {
         plan.locations[0].OtherThings
       );
 
-      console.log(formData.toString());
-
       const response = await fetch(
         "https://plan-service.onrender.com/api/plans",
         {
@@ -142,7 +140,7 @@ const App = () => {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: formData.toString(),
+          body: formData,
         }
       );
 
