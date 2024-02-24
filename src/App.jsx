@@ -5,6 +5,7 @@ import SearchPlan from "./components/SearchPlan";
 import Container from "./components/Container";
 import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
+import { Audio } from "react-loader-spinner";
 
 const App = () => {
   const [Plans, setPlanList] = useState([]);
@@ -48,7 +49,17 @@ const App = () => {
   if (loading)
     return (
       <Container>
-        <div className="loading">Loading...</div>
+        <div className="loading">
+          <Audio
+            height="80"
+            width="80"
+            radius="9"
+            color="#ccc"
+            ariaLabel="loading"
+            wrapperStyle
+            wrapperClass
+          />
+        </div>
       </Container>
     );
   const SearchById = async (id) => {
@@ -78,9 +89,8 @@ const App = () => {
         if (response.status !== 200) {
           throw new Error(responseData);
         }
-        const updatedPlans = Plans.filter((plan) => plan.id !== id);
-        setPlanList(updatedPlans);
         handleSuccess(responseData);
+        getAllPlans();
       } catch (error) {
         handleError(error.message);
         console.error(error);
@@ -145,14 +155,12 @@ const App = () => {
       );
 
       const responseData = await response.json();
-      if (responseData === "created") {
-        setPlanList((prevPlans) => {
-          handleSuccess("Plan created successfully");
-          return [...prevPlans, plan];
-        });
-      }
-      if (response.status !== 200) {
+      if (response.status !== 201) {
         throw new Error(responseData);
+      }
+      if (responseData === "created") {
+        handleSuccess("Plan created successfully");
+        getAllPlans();
       }
     } catch (error) {
       handleError(error.message);
@@ -214,9 +222,8 @@ const App = () => {
       if (response.status !== 200) {
         throw new Error(responseData);
       }
-      const updatedPlans = Plans.map((p) => (p.id === plan.id ? plan : p));
-      setPlanList(updatedPlans);
       handleSuccess(responseData);
+      getAllPlans();
     } catch (error) {
       handleError(error.message);
       console.error(error);
