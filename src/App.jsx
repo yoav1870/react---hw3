@@ -104,6 +104,9 @@ const App = () => {
         (max, plan) => (plan.id > max ? plan.id : max),
         0
       );
+      if (planData.OtherThings === "") {
+        planData.OtherThings = "No other things";
+      }
       const plan = {
         id: maxId + 1,
         planName: planData.planName,

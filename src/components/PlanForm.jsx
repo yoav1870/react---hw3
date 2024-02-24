@@ -13,11 +13,10 @@ const PlanForm = ({ createPlan }) => {
   // const [borderColor, setBorderColor] = useState("blue");
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     const id = 0;
     const locationId = 101;
-    e.preventDefault();
 
-    console.log(OtherThings);
     createPlan({
       id,
       planName,
@@ -54,7 +53,7 @@ const PlanForm = ({ createPlan }) => {
     <Card>
       <form onSubmit={handleSubmit}>
         <h2>Tell me what plan you want to add</h2>
-        <label htmlFor="planName">Name of plan:* </label>
+        <label htmlFor="planName">Name of plan * </label>
         <div className="input-group" onClick={setColorChange}>
           <input
             required
@@ -65,7 +64,7 @@ const PlanForm = ({ createPlan }) => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <label htmlFor="description">Description:*</label>
+        <label htmlFor="description">Description *</label>
         <div className="input-group" onClick={setColorChange}>
           <input
             required
@@ -76,7 +75,7 @@ const PlanForm = ({ createPlan }) => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <label htmlFor="location-name">Location name:*</label>
+        <label htmlFor="location-name">Location name *</label>
         <div className="input-group" onClick={setColorChange}>
           <input
             required
@@ -87,7 +86,7 @@ const PlanForm = ({ createPlan }) => {
             onChange={(e) => setLocationName(e.target.value)}
           />
         </div>
-        <label htmlFor="locationDescription">Location description:*</label>
+        <label htmlFor="locationDescription">Location description *</label>
         <div className="input-group" onClick={setColorChange}>
           <input
             required
@@ -98,7 +97,7 @@ const PlanForm = ({ createPlan }) => {
             onChange={(e) => setLocationDescription(e.target.value)}
           />
         </div>
-        <label htmlFor="maxCapacity">Max Capacity:*</label>
+        <label htmlFor="maxCapacity">Max Capacity *</label>
         <div className="input-group" onClick={setColorChange}>
           <input
             required
@@ -116,7 +115,7 @@ const PlanForm = ({ createPlan }) => {
             }}
           />
         </div>
-        <label htmlFor="safetyInstructions">Safety Instructions * :</label>
+        <label htmlFor="safetyInstructions">Safety Instructions * </label>
 
         <div className="input-group" onClick={setColorChange}>
           <input
@@ -128,7 +127,7 @@ const PlanForm = ({ createPlan }) => {
             onChange={(e) => setSafetyInstructions(e.target.value)}
           />
         </div>
-        <label htmlFor="OtherThings">Other Things:</label>
+        <label htmlFor="OtherThings">Other Things</label>
 
         <div className="input-group" onClick={setColorChange}>
           <input
