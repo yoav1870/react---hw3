@@ -6,6 +6,13 @@ import Container from "./components/Container";
 import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
 import Loading from "./components/Loading";
+import {
+  getData,
+  searchData,
+  deleteData,
+  createData,
+  updateData,
+} from "./service/planService";
 
 const App = () => {
   const [Plans, setPlanList] = useState([]);
@@ -29,62 +36,34 @@ const App = () => {
   useEffect(() => {
     getAllPlans();
   }, []);
+
   const getAllPlans = async () => {
     try {
-      const response = await fetch(
-        "https://plan-service.onrender.com/api/plans"
-      );
-      const responseData = await response.json();
-      if (response.status === 200) {
-        setPlanList(responseData);
-        setLoading(false);
-      } else throw new Error(responseData);
+      const data = await getData();
+      setPlanList(data);
+      setLoading(false);
     } catch (error) {
-      handleError(
-        "There was a problem with the server to load the data. Please try again later."
-      );
+      handleError(error.message);
       setLoading(false);
     }
   };
-  if (loading)
-    return (
-      <Container>
-        <Loading></Loading>
-      </Container>
-    );
+
   const SearchById = async (id) => {
     try {
-      const response = await fetch(
-        `https://plan-service.onrender.com/api/plans/${id}`
-      );
-      const responseData = await response.json();
-      if (response.status === 200) {
-        setPlanList(responseData);
-      } else throw new Error(responseData);
+      const data = await searchData(id);
+      setPlanList(data);
     } catch (error) {
       handleError(error.message);
-      console.error(error);
     }
   };
+
   const deletePlan = async (id) => {
-    if (window.confirm("Are you sure you want to delete this plan?")) {
-      try {
-        const response = await fetch(
-          `https://plan-service.onrender.com/api/plans/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const responseData = await response.json();
-        if (response.status !== 200) {
-          throw new Error(responseData);
-        }
-        handleSuccess(responseData);
-        getAllPlans();
-      } catch (error) {
-        handleError(error.message);
-        console.error(error);
-      }
+    try {
+      const msg = await deleteData(id);
+      handleSuccess(msg);
+      getAllPlans();
+    } catch (error) {
+      handleError(error.message);
     }
   };
 
@@ -94,159 +73,58 @@ const App = () => {
         (max, plan) => (plan.id > max ? plan.id : max),
         0
       );
-      if (planData.OtherThings === "") {
-        planData.OtherThings = "No other things";
-      }
-      const plan = {
-        id: maxId + 1,
-        planName: planData.planName,
-        description: planData.description,
-        locations: [
-          {
-            id: planData.locationId,
-            name: planData.locationName,
-            description: planData.locationDescription,
-            maxCapacity: planData.maxCapacity,
-            safetyInstructions: planData.safetyInstructions,
-            OtherThings: planData.OtherThings,
-          },
-        ],
-      };
-
-      const formData = new URLSearchParams();
-      formData.append("id", plan.id);
-      formData.append("planName", plan.planName);
-      formData.append("description", plan.description);
-      formData.append("locations[0][id]", plan.locations[0].id);
-      formData.append("locations[0][name]", plan.locations[0].name);
-      formData.append(
-        "locations[0][description]",
-        plan.locations[0].description
-      );
-      formData.append(
-        "locations[0][maxCapacity]",
-        plan.locations[0].maxCapacity
-      );
-      formData.append(
-        "locations[0][safetyInstructions]",
-        plan.locations[0].safetyInstructions
-      );
-      formData.append(
-        "locations[0][OtherThings]",
-        plan.locations[0].OtherThings
-      );
-
-      const response = await fetch(
-        "https://plan-service.onrender.com/api/plans",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: formData,
-        }
-      );
-
-      const responseData = await response.json();
-      if (response.status !== 201) {
-        throw new Error(responseData);
-      }
-      if (responseData === "created") {
-        handleSuccess("Plan created successfully");
-        getAllPlans();
-      }
-    } catch (error) {
-      handleError(error.message);
-      console.error(error);
-    }
-  };
-  const updatePlan = async (planData) => {
-    try {
-      const plan = {
-        id: planData.id,
-        planName: planData.planName,
-        description: planData.description,
-        locations: [
-          {
-            id: planData.locationId,
-            name: planData.locationName,
-            description: planData.locationDescription,
-            maxCapacity: planData.maxCapacity,
-            safetyInstructions: planData.safetyInstructions,
-            OtherThings: planData.OtherThings,
-          },
-        ],
-      };
-
-      const formData = new URLSearchParams();
-      formData.append("id", plan.id);
-      formData.append("planName", plan.planName);
-      formData.append("description", plan.description);
-      formData.append("locations[0][id]", plan.locations[0].id);
-      formData.append("locations[0][name]", plan.locations[0].name);
-      formData.append(
-        "locations[0][description]",
-        plan.locations[0].description
-      );
-      formData.append(
-        "locations[0][maxCapacity]",
-        plan.locations[0].maxCapacity
-      );
-      formData.append(
-        "locations[0][safetyInstructions]",
-        plan.locations[0].safetyInstructions
-      );
-      formData.append(
-        "locations[0][OtherThings]",
-        plan.locations[0].OtherThings
-      );
-
-      const response = await fetch(
-        `https://plan-service.onrender.com/api/plans/${plan.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: formData,
-        }
-      );
-      const responseData = await response.json();
-      if (response.status !== 200) {
-        throw new Error(responseData);
-      }
-      handleSuccess(responseData);
+      planData.id = maxId + 1;
+      await createData(planData);
+      handleSuccess("Plan created successfully");
       getAllPlans();
     } catch (error) {
       handleError(error.message);
-      console.error(error);
+    }
+  };
+
+  const updatePlan = async (planData) => {
+    try {
+      const msg = await updateData(planData);
+      handleSuccess(msg);
+      getAllPlans();
+    } catch (error) {
+      handleError(error.message);
     }
   };
 
   return (
     <>
-      {error && (
-        <Alert className="Alert" severity="error">
-          {error}
-        </Alert>
-      )}
-      {success && (
-        <Alert className="Alert" severity="success">
-          {success}
-        </Alert>
-      )}
-      <Header getAllPlans={getAllPlans} />
-      <Container>
-        <PlanForm createPlan={createPlan} />
-        <SearchPlan SearchById={SearchById} />
+      {loading && (
         <Container>
-          <PlanList
-            plans={Plans}
-            deletePlan={deletePlan}
-            updatePlan={updatePlan}
-          />
+          <Loading></Loading>
         </Container>
-      </Container>
+      )}
+      {!loading && (
+        <>
+          {error && (
+            <Alert className="Alert" severity="error">
+              {error}
+            </Alert>
+          )}
+          {success && (
+            <Alert className="Alert" severity="success">
+              {success}
+            </Alert>
+          )}
+          <Header getAllPlans={getAllPlans} />
+          <Container>
+            <PlanForm createPlan={createPlan} />
+            <SearchPlan SearchById={SearchById} />
+            <Container>
+              <PlanList
+                plans={Plans}
+                deletePlan={deletePlan}
+                updatePlan={updatePlan}
+              />
+            </Container>
+          </Container>
+        </>
+      )}
     </>
   );
 };
