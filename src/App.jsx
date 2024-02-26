@@ -5,7 +5,7 @@ import SearchPlan from "./components/SearchPlan";
 import Container from "./components/Container";
 import Alert from "@mui/material/Alert";
 import { useEffect, useState } from "react";
-import { Audio } from "react-loader-spinner";
+import Loading from "./components/Loading";
 
 const App = () => {
   const [Plans, setPlanList] = useState([]);
@@ -49,17 +49,7 @@ const App = () => {
   if (loading)
     return (
       <Container>
-        <div className="loading">
-          <Audio
-            height="80"
-            width="80"
-            radius="9"
-            color="#ccc"
-            ariaLabel="loading"
-            wrapperStyle
-            wrapperClass
-          />
-        </div>
+        <Loading></Loading>
       </Container>
     );
   const SearchById = async (id) => {

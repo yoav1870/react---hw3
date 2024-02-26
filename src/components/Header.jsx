@@ -3,6 +3,12 @@ import Container from "./Container";
 import { FcHome } from "react-icons/fc";
 const Header = ({ text, bgColor, textColor, getAllPlans }) => {
   const HeaderStyle = {
+    height: "70px",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "30px",
     backgroundColor: bgColor,
     color: textColor,
   };

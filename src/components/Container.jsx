@@ -1,7 +1,18 @@
 import propsTypes from "prop-types";
 
 const Container = (props) => {
-  return <div className="container">{props.children}</div>;
+  const containerStyle = {
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "1200px",
+    margin: "auto",
+    padding: "0 20px",
+  };
+  return (
+    <div className="container" style={containerStyle}>
+      {props.children}
+    </div>
+  );
 };
 
 Container.propTypes = {

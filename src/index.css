@@ -12,29 +12,6 @@ body {
   line-height: 1.6;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 20px;
-}
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 30px;
-  color: #fff;
-}
-header {
-  height: 70px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
 .Alert {
   position: fixed;
   top: 0;
@@ -65,15 +42,7 @@ header {
 ul {
   list-style: none;
 }
-/* card */
-.card {
-  background-color: #f4f4f4;
-  color: #333;
-  border-radius: 15px;
-  padding: 40px 50px;
-  margin: 20px 0;
-  position: relative;
-}
+
 .rating {
   display: flex;
   align-items: center;
@@ -132,7 +101,6 @@ ul {
 .delete svg {
   font-size: 20px;
 }
-/* card  */
 
 .input-group {
   display: flex;
