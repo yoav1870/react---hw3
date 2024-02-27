@@ -27,13 +27,7 @@ To begin, follow these steps:
 4. Start the Application: Start the application using one of the following commands:
 
 ```bash
- node main.jsx
-```
-
-or
-
-```bash
- npm start
+ node main.jsx /or/ npm start
 ```
 
 ## Background Story
